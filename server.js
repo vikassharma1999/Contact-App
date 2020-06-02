@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //contact router
-app.get('/', (req, res) => res.send('API Runnning...'));
+app.use('/api/contact', require('./routes/contact'));
 
 //PORT
 const PORT = process.env.PORT || 8000;

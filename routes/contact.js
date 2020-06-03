@@ -52,7 +52,18 @@ router.get('/', async (req, res) => {
   if (!contacts) {
     return res.status(400).json({ msg: 'No Contact Found' });
   }
+  // console.log(res.send(contacts));
   return res.json(contacts);
+});
+
+// @API END POINT GET /api/contact/:id
+// @DESC api for get a contact
+router.get('/:id', async (req, res) => {
+  const contact = await Contact.findById(req.params.id);
+  if (!contact) {
+    return res.status(400).json({ msg: 'Contact Not Found' });
+  }
+  return res.json(contact);
 });
 
 // @API END POINT PUT /api/contact/:id
@@ -85,7 +96,8 @@ router.delete('/:id', async (req, res) => {
       return res.status(400).json({ msg: 'Contact Not Found' });
     }
     await contact.remove();
-    return res.send('Contact Successfully removed');
+    // console.log('REMOVE');
+    return res.json({ msg: 'Contact Successfully removed' });
   } catch (err) {
     console.error(err.message);
     return res.status(500).send('Server Error');

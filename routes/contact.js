@@ -26,9 +26,9 @@ router.post(
     try {
       let contact = await Contact.findOne({ name });
       if (contact) {
-        return res
-          .status(400)
-          .json({ msg: 'Name is already exists, Please use other name' });
+        return res.status(400).json({
+          error: 'Name is already exists, Please use other name',
+        });
       }
       const newContact = {
         name,
@@ -74,8 +74,13 @@ router.put('/:id', async (req, res) => {
     const { name, email, contactno } = req.body;
 
     if (!contact) {
-      return res.status(400).json({ msg: 'Contact Not Found' });
+      return res.status(400).json({ error: 'Contact Not Found' });
     }
+    contact = await Contact.findOne({ name });
+    if (contact) {
+      return res.status(400).json({ error: 'Use different name' });
+    }
+    contact = await Contact.findById(req.params.id);
     contact.name = name;
     contact.email = email;
     contact.contactno = contactno;
